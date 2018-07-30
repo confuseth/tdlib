@@ -128,17 +128,29 @@ classes.FadeHover = function(pnl, col, speed, rad)
 	end)
 end
 
-classes.BarHover = function(pnl, col, height, speed)
+classes.BarHover = function(pnl, col, height, speed, align)
 	col = col || Color(255, 255, 255, 255)
 	height = height || 2
 	speed = speed || 6
-
+	align = align || BOTTOM
+		
 	pnl:SetupTransition("BarHover", speed, TDLibUtil.HoverFunc)
 	pnl:On("PaintOver", function(s, w, h)
-		local bar = math.Round(w*s.BarHover)
-
-		surface.SetDrawColor(col)
-		surface.DrawRect(w/2-bar/2, h-height, bar, height)
+		local barw = math.Round(w*s.BarHover)
+		local barh = math.Round(h*s.BarHover)
+		if (align == BOTTOM) then
+			surface.SetDrawColor(col)
+			surface.DrawRect(w/2-barw/2, h-height, barw, height)
+		elseif (align == TOP) then
+			surface.SetDrawColor(col)
+			surface.DrawRect(w/2-barw/2, 0, barw, height)
+		elseif (align == LEFT) then
+			surface.SetDrawColor(col)
+			surface.DrawRect(0, h/2-barh/2, height, barh)
+		elseif (align == RIGHT) then
+			surface.SetDrawColor(col)
+			surface.DrawRect(w-height, h/2-barh/2, height, barh)
+		end
 	end)
 end
 
